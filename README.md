@@ -1,9 +1,15 @@
+
 # ISL3 expansion in _E. faecium_
 
-Recent ISL3 expansion drives ongoing genome restructuring and gene regulation in clinical _E. faecium_
+This repository contains pipelines, scripts, and other custom code for our survey of IS elements in the ESKAPE pathogens, analysis of ISL3 expansion in gram-positive cocci, and description of ISL3-mediated pathogenic adaptation of _Enterococcus faecium_, as presented in [our paper](#Citation).
 
-Repository for the project workflows, analysis, and results.
+This work is currently under review; thus, it is subject to change.
 
-Note that this repository aims to document our analysis approach and is not intended for a full reproduction of the results, since the metadata tables are needed to fully run many of the scripts.
 
-If you use any of the code found in this repository, please cite our preprint.
+### Citation
+
+If you use any of the code found in this repository, please cite our [preprint](https://www.biorxiv.org/content/10.1101/2025.03.16.643550v1).
+
+**Replicative selfish genetic elements are driving rapid pathogenic adaptation of _Enterococcus faecium_** \
+Matthew Grieshop & Aaron Behr _et al._ bioRxiv (2024) \
+doi: https://doi.org/10.1101/2025.03.16.643550
