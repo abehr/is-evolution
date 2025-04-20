@@ -422,7 +422,7 @@ all_genome_ises_abundant_family_wide <- IS_counts_complete %>%
   dplyr::filter(!is.na(NODE_ID)) %>%
   pivot_wider(names_from = family, 
               values_from = average) %>%
-  dplyr::mutate(other = rowSums(select(., -NODE_ID, -all_of(abundant_is_families[-length(abundant_is_families)])), na.rm = TRUE)) %>%
+  dplyr::mutate(other = rowSums(dplyr::select(., -NODE_ID, -all_of(abundant_is_families[-length(abundant_is_families)])), na.rm = TRUE)) %>%
   dplyr::select(NODE_ID, any_of(abundant_is_families))
 
 # Save the wide format data
@@ -435,9 +435,6 @@ write.table(all_genome_ises_abundant_family_wide, "figures/is_expansion_tree/Abu
 # write closest references to file
 setwd("/Volumes/lab_asbhatt/mpgriesh/projects/transmission/data/sra/efm/IS_expansion_phylogeny/")
 write.table(closest_references, "all_enterococcus_closest_references.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
-
-# write ISE counts per reference to file
-write.table(IS_counts_per_family_per_reference, "all_enterococcus_IS_counts_per_reference.tsv", sep = "\t", quote = FALSE, row.names = FALSE)
 
 # write all E. faecalis genome names to a file -----------------------------------
 setwd("/Volumes/lab_asbhatt/mpgriesh/projects/transmission/data/sra/efm/IS_expansion_phylogeny/")
@@ -519,4 +516,5 @@ a1 <- efm_ranges %>%
   dplyr::left_join(all_ises_per_family %>% dplyr::filter(family == "ISL3"), by = "Genome") %>%
   dplyr::mutate(count = tidyr::replace_na(count, 0)) %>%
   dplyr::group_by(Clade) %>%
-  dplyr::summarize(mean = mean(count), sd = sd(count), n = n())
+  dplyr::summarize(median = median(count), mean = mean(count), sd = sd(count), n = n(), 
+                   min = min(count), max = max(count), iqr = IQR(count))
