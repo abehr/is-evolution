@@ -14,6 +14,7 @@ c = c.with_columns(
 
 # Parse GTDB-tk taxonomy; ignore sub-genus here for parity with ncbi complete
 n = n.with_columns(
+	# Ignore the sub-genus designation that GTDB-Tk can give (e.g. "Enterococcus_B") for parity with NCBI txid type
 	genus=pl.col('genus').str.split('_').list.get(0),
 	# Here, we don't have to worry about whether the species name has >2 words
 	# so we can use a regex.
@@ -21,6 +22,9 @@ n = n.with_columns(
 	# and taking the 2nd item would cause an error. 
 	species=pl.col('species').str.extract(r'^\S+\s+(\S+)$').fill_null('')
 )
+
+# Finally, we also need to ignore the subspecies clade (e.g. "hormaechei_B") for parity with NCBI txid type
+n = n.with_columns(species=pl.col('species').str.split('_').list.get(0))
 
 # Compute average genome length per genus
 c_genome_lengths = (

@@ -1,9 +1,10 @@
 import polars as pl
+import xlsxwriter # Not explicitly used, but need to verify this package is installed in order to write excel from pl.
 import locate
 
 # Collect all samples to be used in the collection.
 ncbi = pl.read_csv('data/ncbi_all_filtered_samples_full.csv')
-shc = pl.read_csv('data/shc_samples.csv')
+shc = pl.read_csv('data/shc_samples.csv').filter(pl.col('species') != 'undefined') # remove ERV_165
 ente = (
 	pl
 	.read_csv('data/other_ente_samples.csv')
@@ -54,5 +55,10 @@ df = (
 	.sort(by=['genus','species'])
 )
 
-# Note that you need xlsxwriter pkg for this
-df.write_excel('supplementary_table_is_counts_per_sample.xlsx')
+# df.write_csv('data/supplementary_table_is_counts_per_sample.csv')
+
+public = pl.col('collection').str.starts_with(locate.NCBI)
+shc = pl.col('collection').str.starts_with(locate.SHC)
+
+df.filter(public).write_excel('Table_S1_IS_counts_public_data.xlsx')
+df.filter(shc).sort(by='collection').write_excel('Table_S2_IS_counts_SH_ente.xlsx')
