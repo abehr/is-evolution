@@ -1,0 +1,15 @@
+name: nf_illumina_pipeline
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - fastani=1.34
+  - htstream=1.4.1
+  - isescan=1.7.3
+  - mash=2.3
+  - multiqc=1.30
+  - seqtk=1.5
+  - spades=4.2.0
+  - sra-tools=3.2.1
+  - trim-galore=0.6.10
+  - checkm2=1.1.0 # recommended to install and configure in a separate env

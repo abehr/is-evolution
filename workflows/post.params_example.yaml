@@ -1,0 +1,6 @@
+# Example params file for post.nf pipeline.
+outdir: 'nf_result'
+ref_genome: '/Users/abehr/data/aus0004_reference/GCF_000250945.1_ASM25094v1_genomic.fna'
+ref_sketch: '/Users/abehr/data/aus0004_reference/genome.msh'
+assembly: "./nf_result/assembly/*.fna"
+mash_sketch: "./nf_result/msh/*.msh"

@@ -1,0 +1,41 @@
+# Example configuration file for is-evolution analyses
+# Copy this file to config.yaml and edit as needed.
+
+# Other than project_root, all file and directory paths can be specified
+# as either relative (to project_root) or absolute.
+
+# Absolute path to the project root directory
+# (This is also inferred as the base for relative paths)
+project_root: /absolute/path/to/your/project
+
+# Directory containing the preprocessed data files downloaded from Zenodo
+data_dir: data
+
+# Directory to store analysis outputs (figures, tables, etc.)
+output_dir: outputs
+
+
+# ----------------------------------------------------------------------
+# Optional source data
+# ----------------------------------------------------------------------
+# These fields specify additional inputs used by some scripts.
+# They can be left commented out unless you plan to run analyses that 
+# rely on local or external datasets beyond the Zenodo package, such as
+# publicly-available genomic data from NCBI.
+
+source:
+  # ncbi_complete_datasets: /path/to/ncbi_complete_downloaded_data_parent_dir
+  # genome: local/genome # dir containing genome fasta files
+  # gff: local/bakta_hts # dir containing Bakta GFF3 files (after preprocess_gff.py)
+  # eskape_ani_clusters: local/all_species_clusters.tsv
+  # poppunk_tree_genomes: local/poppunk_efaecium_genome_labels.txt
+
+  # entrez_results:
+  #   experiments: entrez/efm/experiments.jsonl
+  #   samples: entrez/efm/samples.jsonl
+
+  # mash_pairwise_ani:
+  #   mash_dists_file: path/to/mash_pairwise_distances.tsv
+  #   mash_dist_dir: path/to/msh_dir
+
+  # efaecium_chromosomes_list: /path/to/efm_chromosomes.txt

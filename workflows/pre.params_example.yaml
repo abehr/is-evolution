@@ -1,0 +1,4 @@
+# Example params file for pre.nf pipeline.
+outdir: 'nf_result'
+genome_size_mb: 2.9
+sra_run_accessions: 'efm_filtered_runs.txt'

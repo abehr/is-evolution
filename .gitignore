@@ -1,0 +1,11 @@
+*.pyc
+__pycache__/
+*$py.class
+.venv/
+venv/
+.mamba/
+.micromamba/
+.conda/
+*.egg-info/
+.DS_Store
+.vscode/
