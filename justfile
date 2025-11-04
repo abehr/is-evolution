@@ -92,7 +92,7 @@ table-is-counts:
 
 # Query NCBI API to get info on all relevant datasets & metadata for a given organism
 entrez-esearch-fetch wdir ncbi_auth_email ncbi_api_key organism:
-  {{python}} {{repo_root}}/src/biobehr/ncbi_entrez_direct.py \
+  {{python}} src/biobehr/ncbi_entrez_direct.py \
     --email {{ncbi_auth_email}} --key {{ncbi_api_key}} \
     -o {{wdir}} \
     --organism '{{organism}}' \
@@ -102,7 +102,7 @@ entrez-esearch-fetch wdir ncbi_auth_email ncbi_api_key organism:
 
 # Some semi-generalized preprocessing of results (to prep for more ad-hoc/specific filtering)
 entrez-results-preprocess wdir genome_mb:
-  {{python}} process_entrez_results.py {{genome_mb}} \
+  {{python}} analysis/03_shortread_is_estimate_timeline/process_entrez_results.py {{genome_mb}} \
     {{wdir}}/samples.jsonl \
     {{wdir}}/experiments.jsonl \
     {{wdir}}/processed_entrez_results.csv
@@ -110,15 +110,17 @@ entrez-results-preprocess wdir genome_mb:
 
 ### E. faecium short-read dataset curation
 efaecium-get-shortread-accessions wdir ncbi_auth_email ncbi_api_key:
-  just analysis/03_shortread_is_estimate_timeline/entrez-esearch-fetch {{wdir}} {{ncbi_auth_email}} {{ncbi_api_key}} 'Enterococcus faecium'
-  just analysis/03_shortread_is_estimate_timeline/entrez-results-preprocess {{wdir}} 2.9
-  {{python}} efm_filter_sra.py {{wdir}}/processed_entrez_results.csv {{wdir}}/efm_filtered_runs.txt
+  just entrez-esearch-fetch {{wdir}} {{ncbi_auth_email}} {{ncbi_api_key}} 'Enterococcus faecium'
+  just entrez-results-preprocess {{wdir}} 2.9
+  # use abs path wdir
+  {{python}} analysis/03_shortread_is_estimate_timeline/efm_filter_sra.py {{wdir}}/processed_entrez_results.csv {{wdir}}/efm_filtered_runs.txt
 
 
 ### S. epidermidis short-read datset curation
 staphepi-get-shortread-accessions wdir ncbi_auth_email ncbi_api_key:
-  just analysis/03_shortread_is_estimate_timeline/entrez-esearch-fetch {{wdir}} {{ncbi_auth_email}} {{ncbi_api_key}} 'Staphylococcus epidermidis'
-  just analysis/03_shortread_is_estimate_timeline/entrez-results-preprocess {{wdir}} 2.5
+  just entrez-esearch-fetch {{wdir}} {{ncbi_auth_email}} {{ncbi_api_key}} 'Staphylococcus epidermidis'
+  just entrez-results-preprocess {{wdir}} 2.5
+  # use abs path wdir
   {{python}} analysis/03_shortread_is_estimate_timeline/epi_filter_sra.py {{wdir}}/processed_entrez_results.csv {{wdir}}/epi_filtered_runs.txt
 
 
