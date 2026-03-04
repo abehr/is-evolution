@@ -16,8 +16,9 @@ from biobehr.gffpl import GFFPL, get_orf, get_flank
 def main():
 	samples, tpase_gff = get_sample_list_and_all_tpase_annotations()
 	all_unique_tpase_seqs, stats_per_tpase_variant = extract_all_tpase_sequences_from_annotations(samples, tpase_gff)
-	fig = cumulative_distribution_log_plot(stats_per_tpase_variant)
+	fig, pdf = cumulative_distribution_log_plot(stats_per_tpase_variant)
 	fig.write_image(data.output / '01_tpase_copies.svg')
+	pdf.write_excel(data.output / '01_tpase_copies.xlsx')
 
 	# Find the set of most common tpase seqs (optional: write to fasta & CSV)
 	most_common_tpase = get_most_common_tpase_set(all_unique_tpase_seqs, stats_per_tpase_variant)
@@ -269,7 +270,7 @@ def cumulative_distribution_log_plot(stats_per_tpase_variant):
 		xaxis_title = 'Cumulative no. unique IS transposase variants',
 		yaxis_title = 'Cumulative total no. IS transposase copies observed (across 593 E. faecium genomes)'
 	)
-	return fig
+	return fig, pdf
 
 
 

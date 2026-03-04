@@ -21,7 +21,9 @@ output_dir: outputs
 # These fields specify additional inputs used by some scripts.
 # They can be left commented out unless you plan to run analyses that 
 # rely on local or external datasets beyond the Zenodo package, such as
-# publicly-available genomic data from NCBI.
+# publicly-available genomic data from NCBI. You can also add additional 
+# custom fields within `source` (e.g. if further customizing the codebase), 
+# and they will be automatically loaded into cfg.
 
 source:
   # ncbi_complete_datasets: /path/to/ncbi_complete_downloaded_data_parent_dir

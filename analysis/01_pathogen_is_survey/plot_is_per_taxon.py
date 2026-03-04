@@ -1,5 +1,6 @@
 import polars as pl
 import plotly.express as px
+import xlsxwriter
 from efm.config import data
 from efm import plot_utils as plt
 
@@ -47,3 +48,9 @@ for genus in df['genus'].unique():
 		)
 
 	fig.write_image(output_dir / f'{genus}.svg')
+
+# Write out plot source data
+with xlsxwriter.Workbook(output_dir / 'source_data.xlsx') as xl:
+	for genus in df['genus'].unique():
+		pdf = df.filter(genus=genus)['sample', 'species', 'nIS_Mb']
+		pdf.write_excel(xl, xl.add_worksheet(genus))

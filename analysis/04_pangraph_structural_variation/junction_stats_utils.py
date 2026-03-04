@@ -79,7 +79,9 @@ def parse_subgraph_paths(subgraphs_dir):
 		non_empty=(pl.col('path').list.len() > 2) # note that path length 1 is ambiguously empty bc it's not a true junction, but those get filtered out anyway. 
 	)
 
-
+# This assumes that 'N' is *only* used as a spacer, and it not used as an ambiguous base.
+# Depending on the source genomes, this is not a valid assumption. If that's the case, 
+# this method needs to be reimplemented to do the accounting correctly.
 def joints_pos_with_spacers(joints_pos, genomes_dir):
 	spacer = 'N'*2000
 	spacers = []

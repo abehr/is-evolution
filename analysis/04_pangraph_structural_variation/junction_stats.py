@@ -1,6 +1,5 @@
 import polars as pl
 from pathlib import Path
-import sys
 import argparse
 
 from biobehr import io

@@ -77,8 +77,8 @@ build-datasets:
   {{python}} dataproc/final_samples.py
 
 table-is-counts:
-  @echo "[Supplementary Data 2] NCBI-complete & NCBI-longread sample info (genome length, contig info, IS counts)"
-  @echo "[Supplementary Data 3] SHC-iso sample info (genome length, IS counts where necessary for analysis)"
+  @echo "[Supplementary Table 2] NCBI-complete & NCBI-longread sample info (genome length, contig info, IS counts)"
+  @echo "[Supplementary Table 3] SHC-iso sample info (genome length, IS counts where necessary for analysis)"
   {{python}} dataproc/table_is_counts.py
 
 
@@ -139,7 +139,7 @@ pathogen-is-survey:
   @echo -e "\n[Extended Data Fig. 1] IS counts/spp across ESKAPEE genera"
   {{python}} analysis/01_pathogen_is_survey/plot_is_per_taxon.py
 
-  @echo -e "\n[Fig. 1C][Extended Data Fig. 2] IS counts/spp (distribution across chromosome vs. plasmids)"
+  @echo -e "\n[Fig. 1C][Extended Data Fig. 3] IS counts/spp (distribution across chromosome vs. plasmids)"
   {{python}} analysis/01_pathogen_is_survey/plot_taxon_is_per_contig_type.py
 
 
@@ -151,7 +151,7 @@ pairwise-ani-clusters:
   # as specified in the manuscript Methods and Extended Data Fig. 3 legend. 
   # The distance matrix is not included in our data upload due to its large 
   # file size and because it can be recreated from public data.
-  @echo "[Extended Data Fig. 3] Genomic diversity per ESKAPEE organism and IS copy range per cluster"
+  @echo "[Extended Data Fig. 2] Genomic diversity per ESKAPEE organism and IS copy range per cluster"
   {{r}} analysis/01_pathogen_is_survey/pairwise_ani.R $PROJECT_CONFIG 0.01 25
 
 
@@ -160,10 +160,10 @@ tpase-seqs-flanks-boundaries:
   # NOTE: requires downloading additional public data (E. faecium genomes & GFFs from NCBI) to run. 
   # NOTE: requires MAFFT (or Muscle5 with a one-line change).
 
-  @echo "[Fig. 1D] Plot IS tpase sequence conservation/diversity; output common tpase seqs & sequence context."
+  @echo "[Extended Data Fig. 4D] Plot IS tpase sequence conservation/diversity; output common tpase seqs & sequence context."
   {{python}} analysis/01_seqs_flanks_boundaries/exact_copy_analysis.py
 
-  @echo -e "\n[Data for Extended Data Fig. 5] Analyze context of common tpase in order to determine entropy-based IS boundaries."
+  @echo -e "\n[Data for Extended Data Fig. 4C] Analyze context of common tpase in order to determine entropy-based IS boundaries."
   {{python}} analysis/01_seqs_flanks_boundaries/calculate_is_flank_boundaries.py
 
 
@@ -200,7 +200,7 @@ epi-is-timeline:
 
 # Example of how the Pangraph analysis workflow can be invoked; arguments should be modified based on your workflow.
 pangraph-structural-variation dataset='':
-  @echo "[Data for Fig. 4C-D] Pangraph junction statistics (IS-mediated structural variation)"
+  @echo "[Data for Fig. 4C-D][Supplementary Table 4] Pangraph junction statistics (IS-mediated structural variation)"
   @if [ -z "{{dataset}}" ]; then \
     {{python}} analysis/04_pangraph_structural_variation/junction_stats.py -h; \
   else \
@@ -212,7 +212,7 @@ pangraph-structural-variation dataset='':
   fi
 
 longitudinal-structural-variation:
-  @echo "[Fig. 5B] Within-sample structural variation"
+  @echo "[Extended Data Fig. 9] Within-sample structural variation"
   {{python}} analysis/05_longitudinal_metagenomic/sniffles_sv_within_sample.py
 
 
@@ -230,7 +230,7 @@ rnaseq-diff-expression:
   # errors while attempting to install this script's dependencies, such as the DESEq2
   # library, which has some system-level dependencies. If this occurs, it might be
   # best to switch to a different R environment.
-  @echo "[Data for Fig. 6B-C][Extended Data Fig. 11] RNA-Seq differential expression analysis \
+  @echo "[Data for Fig. 5B-C][Extended Data Fig. 10] RNA-Seq differential expression analysis \
   (ISL3 variant effects on neighboring gene expression)"
   {{r}} analysis/06_transcriptomic/rnaseq_analysis.R $PROJECT_CONFIG \
     ../local/rna_seq/multicov_counts_v2.txt \
@@ -244,7 +244,7 @@ genes-adjacent-is:
   # - source.gff (directory containing GFFs to analyze).
   # GFFs can be downloaded from NCBI (for public data) or generated
   # by running Bakta (for SHC data on Zenodo).
-  @echo "[Supplementary Data 8] ISL3->FolT and other genes adjacent to IS transposases in E. faecium"
+  @echo "[Supplementary Table 8] ISL3->FolT and other genes adjacent to IS transposases in E. faecium"
   {{python}} analysis/06_isl3_proximal_genes/find_is_proximal_genes.py
 
 

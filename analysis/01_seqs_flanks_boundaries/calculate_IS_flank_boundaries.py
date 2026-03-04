@@ -65,5 +65,3 @@ consensus = (
 
 consensus = mct.join(df, on='nt_seqid')
 consensus.write_csv(data.output / 'consensus_flanks_per_tpase.csv')
-
-

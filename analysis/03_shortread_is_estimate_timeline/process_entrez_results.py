@@ -15,8 +15,12 @@ def main():
 		)
 
 	est_genome_size = float(sys.argv[1])*1E6
-	samples = pl.read_ndjson(sys.argv[2]).unique() # file would have same nrows as e, but some are dupes.
-	experiments = pl.read_ndjson(sys.argv[3])
+	# Scan the full data before inferring schema. This is slow/expensive, but otherwise some nearly-empty columns
+	# will be incorrectly assumed as null and will be skipped. Alternatively we can define the schema because we know what it is
+	# from ncbi_entrez_direct, but I won't write that for now, bc this implementation shouldn't be a problem
+	# unless there are millions of records. 
+	samples = pl.read_ndjson(sys.argv[2], infer_schema_length=None).unique() # file would have same nrows as e, but some are dupes.
+	experiments = pl.read_ndjson(sys.argv[3], infer_schema_length=None)
 	output_csv = Path(sys.argv[4])
 	assert not output_csv.exists(), f'Output CSV {output_csv} already exists!'
 	print(
@@ -28,6 +32,8 @@ def main():
 	df = merge(samples, experiments)
 	df = with_valid_collection_year(df)
 	df = with_est_coverage(df, est_genome_size)
+
+	print(f'{len(df)} with approx. inferrable collection year')
 
 	## We can probably ignore any non-paired-end data, because there's not enough to warrant it. Note:
 	df.filter(pl.col('library_layout') == 'SINGLE', pl.col('est_cov') > 20) # empty for Staph epi
@@ -97,10 +103,13 @@ Let's do it like this: If the date range is ~3 years or less, take the middle, b
 year won't be off by >~1. Otherwise ignore, because the date window is too wide to get an accurate year.
 '''
 def with_valid_collection_year(df):
+	# date_col = next((c for c in ('collection_date', 'collection date') if c in df.columns), None)
+	date_col = 'collection_date'
+	if date_col is None: raise ValueError('Date column not found!')
 	return (
 		df
 		# Get start/end date. These will be the same if the collection date is not a range.
-		.with_columns(ysplit=pl.col('collection_date').fill_null('').str.split('/'))
+		.with_columns(ysplit=pl.col(date_col).fill_null('').str.split('/'))
 		.with_columns(
 			ystart=pl.col('ysplit').list.first().str.split('-').list.first().cast(int, strict=False),
 			yend=pl.col('ysplit').list.last().str.split('-').list.first().cast(int, strict=False)

@@ -17,32 +17,22 @@ df = (
 
 print(
 	f'Public genomes from ESKAPEE genera with geNomad and ISEScan data:'
-	f'\n{len(samples.filter(pl.col('collection').str.starts_with(defs.NCBI_NANOPORE)))} NCBI-longread'
-	f'\n{len(samples.filter(pl.col('collection').str.starts_with(defs.NCBI_COMPLETE)))} NCBI-complete'
+	f'\n{len(samples.filter(pl.col("collection").str.starts_with(defs.NCBI_NANOPORE)))} NCBI-longread'
+	f'\n{len(samples.filter(pl.col("collection").str.starts_with(defs.NCBI_COMPLETE)))} NCBI-complete'
 	f'\nOf these, {len(df)} are ESKAPEE organisms (shown in the plot).'
 )
 
-bar = (
-	df # Calculate mean IS per genome-Mb
-	.with_columns(nIS_Mb=pl.col('nIS') / (pl.col('genome_length')/1e6))
-	.group_by('eskape') # for each ESKAPE taxon group
-	.agg(
-		mean=pl.mean('nIS_Mb'),
-		std=pl.std('nIS_Mb'),
-		nsamp=pl.len()
-	)
-	# You could use standard error as error bars (rather than stdev)
-	# Casting doesn't seem necessary but w/e to be safe
-	.with_columns(sem=pl.col('std')/pl.col('nsamp').cast(pl.Float64).sqrt())
-)
+# Calculate IS per genome-Mb
+box = df.with_columns(nIS_Mb=pl.col('nIS') / (pl.col('genome_length')/1e6))
 
-fig = px.bar(bar, 
-	x='mean', y='eskape', error_x='std',
-	orientation='h', #text='nsamp',
-	category_orders=dict(eskape=defs.eskape_order),
+fig = px.box(
+	box, x='nIS_Mb', y='eskape', orientation='h', 
+	category_orders=dict(eskape=defs.eskape_order), 
 	template='plotly_white'
 )
+plt.common_figure_style(fig, y_italic=True, publish=True, small=True)
+plt.common_box_style(fig, optimize_smaller=False)
+fig.update_traces(fillcolor='#D5E9B8', marker_color='#D5E9B8')
 
-plt.common_figure_style(fig, y_italic=True, publish=True, small=False)
-fig.update_traces(marker_color='#abd370', marker_line_color="#3a4726", marker_line_width=2)
 fig.write_image(data.output / '01_eskape_IS.svg')
+box['sample', 'nIS_Mb', 'eskape'].write_excel(data.output / '01_eskape_IS.xlsx')

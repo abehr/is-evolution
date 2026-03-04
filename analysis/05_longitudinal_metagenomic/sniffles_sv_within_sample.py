@@ -35,4 +35,5 @@ fig = px.bar(
 )
 plt.common_figure_style(fig, publish=True)
 fig.write_image(data.output / '05_sv_within_sample.svg')
+fig.rename(dict(len='n_SV')).write_excel(data.output / '05_sv_within_sample.xlsx')
 

@@ -86,7 +86,3 @@ def consensus_sequence(msa_file, entropy_threshold=1.0, min_region_size=100, seq
 		consensus_end=end,
 		consensus=consensus_str
 	)
-
-
-
-

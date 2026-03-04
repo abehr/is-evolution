@@ -70,7 +70,7 @@ For example:
 - `pathogen-is-survey` runs all analyses in `analysis/01_pathogen_survey`, producing Figs. 1B–C and Extended Data Figs. 1–2.
 
 	This can be run directly using the preprocessed Zenodo data.
-- `pangraph-structural-variation` demonstrates how the PanGraph analysis was configured for Fig. 4 and Supplementary Data 4.
+- `pangraph-structural-variation` demonstrates how the PanGraph analysis was configured for Fig. 4 and Supplementary Table 4.
 
 	This requires additional local data and configuration, but you can run the recipe with no arguments to see a more detailed explanation.
 
@@ -154,14 +154,14 @@ This table shows where each of the main analyses lives, which scripts comprise i
 
 | Folder | Main scripts | Outputs | `just` recipe |
 |---|---|-----|------|
-| **01_pathogen_is_survey/** | `plot_eskape_is_counts.py`, `plot_is_per_taxon.py`, `plot_taxon_is_per_contig_type.py` | Fig. 1B–C, Ext. Data Figs. 1–2 | `pathogen-is-survey` |
-| **01_seqs_flanks_boundaries/** | `exact_copy_analysis.py`, `calculate_is_flank_boundaries.py` | Fig. 1D, data for Ext. Data Fig. 5 | `tpase-seqs-flanks-boundaries` |
+| **01_pathogen_is_survey/** | `plot_eskape_is_counts.py`, `plot_is_per_taxon.py`, `plot_taxon_is_per_contig_type.py` | Fig. 1B–C, Ext. Data Fig. 1 & 3 | `pathogen-is-survey` |
+| **01_seqs_flanks_boundaries/** | `exact_copy_analysis.py`, `calculate_is_flank_boundaries.py` | Ext. Data Fig. 4 | `tpase-seqs-flanks-boundaries` |
 | **02_isl3_taxonomic_distribution/** | `is_expansion_phylogeny.R`, `plot_isl3_per_cocci.py` | Data for Fig. 2A–B, Fig. 2C | `isl3-taxonomic-distribution` |
-| **03_shortread_is_estimate_timeline/** | `count_ise.py`, `ise_plots.py` | Fig. 3C, Ext. Data Fig. 6C | `efm-is-timeline` |
-| **04_pangraph_structural_variation/** | `junction_stats.py` | Data for Fig. 4C–D | `pangraph-structural-variation` |
-| **05_longitudinal_metagenomic/** | `sniffles_sv_within_sample.py` | Fig. 5B | `longitudinal-structural-variation` |
-| **06_transcriptomic/** | `rnaseq_analysis.R` | Fig. 6B–C, Ext. Data Fig 11 | `rnaseq-diff-expression` |
-| **06_isl3_proximal_genes/** | `find_is_proximal_genes.py` | Supp. Data 8 | `genes-adjacent-is` |
+| **03_shortread_is_estimate_timeline/** | `count_ise.py`, `ise_plots.py` | Fig. 3C, Ext. Data Fig. 5 | `efm-is-timeline` |
+| **04_pangraph_structural_variation/** | `junction_stats.py` | Data for Fig. 4, Supp. Table 4 | `pangraph-structural-variation` |
+| **05_longitudinal_metagenomic/** | `sniffles_sv_within_sample.py` | Ext. Data Fig. 9 | `longitudinal-structural-variation` |
+| **06_transcriptomic/** | `rnaseq_analysis.R` | Fig. 5B–C, Ext. Data Fig. 10 | `rnaseq-diff-expression` |
+| **06_isl3_proximal_genes/** | `find_is_proximal_genes.py` | Supp. Table 8 | `genes-adjacent-is` |
 
 
 
@@ -170,6 +170,5 @@ This table shows where each of the main analyses lives, which scripts comprise i
 If you use any of the code found in this repository, please cite our [preprint](https://www.biorxiv.org/content/10.1101/2025.03.16.643550v1).
 
 **Replicative selfish genetic elements are driving rapid pathogenic adaptation of _Enterococcus faecium_** \
-
-Matthew Grieshop & Aaron Behr et al., _bioRxiv_ (2025) \
+Matthew Grieshop & Aaron Behr et al. _bioRxiv_ (2025) \
 doi: https://doi.org/10.1101/2025.03.16.643550

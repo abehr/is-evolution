@@ -74,8 +74,11 @@ def mean_t_SE_CI(vals, conf=.95):
 # This can just take the "isc" plot. We'll just implement mean for now
 def timeline_lowess_sliding_window(df, fams, window=2, lowess_smoothing=.25, fam_labels=False):
 	aggs = []
+	n = [] # number of samples considered per sliding window slice
 	for year in range(df['year'].min()+window, df['year'].max()-window+1):
-		per_fam = df.filter(pl.col('year').is_between(year-window, year+window)).group_by('family').agg('est_copy')
+		window_slice = df.filter(pl.col('year').is_between(year-window, year+window))
+		per_fam = window_slice.group_by('family').agg('est_copy')
+		n.append(dict(year=year, nsamp=window_slice['sample'].n_unique()))
 		for fam in fams:
 			vals = per_fam.filter(family=fam)['est_copy'].item().to_numpy()
 			mean, mse = mean_t_SE_CI(vals)
@@ -112,4 +115,18 @@ def timeline_lowess_sliding_window(df, fams, window=2, lowess_smoothing=.25, fam
 	fig.update_xaxes(range=[aggs['year'].min()-1, aggs['year'].max()+1])
 	fig.update_yaxes(range=[-2, int(aggs['mean'].max()+2)])
 
+	return fig, aggs, pl.DataFrame(n)
+
+# Plot the number of samples considered for each sliding window slice. Note that,
+# because these are sliding windows, most samples are included in multiple windows.
+def timeline_bar_n_samples_per_sliding_window_slice(n_per_window_slice):
+	fig = px.bar(n_per_window_slice, x='year', y='nsamp', template='plotly_white')
+	fig.update_yaxes(range=[-100, 2050])
+	plt.common_figure_style(fig, publish=True)
+	for y,n in n_per_window_slice.iter_rows():
+		fig.add_annotation(
+			x=y, y=0, xref='x', yref='paper', text=str(n),
+			showarrow=False, font=dict(size=7), textangle=-90
+		)
+	
 	return fig

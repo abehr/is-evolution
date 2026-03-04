@@ -70,6 +70,7 @@ eskape_order = [
 ]
 
 eskape_order_df = pl.DataFrame(eskape_order, schema=['eskape']).with_row_index(name='eskape_idx')
+eskape_order_df_with_ef = pl.DataFrame(eskape_order + ['E. faecalis'], schema=['eskape']).with_row_index(name='eskape_idx')
 
 eskape_taxa = (
 	pl

@@ -24,7 +24,7 @@ process isescan {
 
 // Compare all data
 
-process mash_dist_reads {
+process mash_dist {
 	tag "${id}_mash_dist"
 	memory '2 GB'
 	publishDir "$params.outdir/mash_dist", mode: 'link', saveAs: { "${id}.txt" }

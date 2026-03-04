@@ -1,5 +1,5 @@
 import polars as pl
-from ise_plots import timeline_lowess_sliding_window
+from ise_plots import timeline_lowess_sliding_window, timeline_bar_n_samples_per_sliding_window_slice
 from efm.config import data
 
 # Short-read IS count estimates produced by count_ise script
@@ -28,6 +28,10 @@ fams = isc.group_by('family').agg(pl.sum('count')).sort('count', descending=True
 fams.remove('other')
 fams = fams + ['other']
 
-fig = timeline_lowess_sliding_window(isc, fams, window=2, lowess_smoothing=.5)
+fig, aggs, n = timeline_lowess_sliding_window(isc, fams, window=2, lowess_smoothing=.5)
 fig.update_yaxes(range=[0,13])
 fig.write_image(data.output / '03_epi_timeline_trendline.svg')
+aggs.write_excel(data.output / '03_epi_timeline_trendline.xlsx') # source data
+
+bar_nsamp_per_window = timeline_bar_n_samples_per_sliding_window_slice(n)
+bar_nsamp_per_window.write_image(data.output / '03_epi_timeline_trendline_nsamp_per_window.svg')

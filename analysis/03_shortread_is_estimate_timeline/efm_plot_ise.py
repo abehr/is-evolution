@@ -1,5 +1,5 @@
 import polars as pl
-from ise_plots import timeline_boxplot_binned, timeline_lowess_sliding_window
+from ise_plots import timeline_boxplot_binned, timeline_lowess_sliding_window, timeline_bar_n_samples_per_sliding_window_slice
 from efm.config import data
 
 # Short-read IS count estimates produced by count_ise script
@@ -23,12 +23,21 @@ isc = (
 	)
 )
 
+print('Samples per 5-year bin:')
+print(isc['sample', 'year_bin'].unique()['year_bin'].value_counts().sort(by='year_bin'))
+
 efm_common_fams = ['ISL3', 'IS30', 'IS256', 'IS3', 'IS200/IS605', 'IS110']
 
 ### 5-year bins boxplot
 box = timeline_boxplot_binned(isc, efm_common_fams)
 box.write_image(data.output / '03_efm_timeline_boxplot.svg')
+isc.write_excel(data.output / '03_efm_timeline_boxplot.xlsx') # source data
 
 ### Sliding window timeline with 95% CI
-line = timeline_lowess_sliding_window(isc, efm_common_fams, window=2, lowess_smoothing=.25)
+line, aggs, n = timeline_lowess_sliding_window(isc, efm_common_fams, window=2, lowess_smoothing=.25)
 line.write_image(data.output / '03_efm_timeline_trendline.svg')
+aggs.write_excel(data.output / '03_efm_timeline_trendline.xlsx') # source data
+
+### Number of samples considered per sliding window slice. 
+bar_nsamp_per_window = timeline_bar_n_samples_per_sliding_window_slice(n)
+bar_nsamp_per_window.write_image(data.output / '03_efm_timeline_trendline_nsamp_per_window.svg')

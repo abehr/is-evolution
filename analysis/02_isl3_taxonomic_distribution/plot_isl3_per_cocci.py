@@ -82,3 +82,4 @@ for _, sp, count, _ in sp_order.iter_rows():
 
 fig.update_layout(width=1000, height=400) # ensure that the tick labels render how we want before printing to file
 fig.write_image(data.output / '02_ISL3_cocci.svg')
+df.write_excel(data.output / '02_ISL3_cocci.xlsx') # source data
